@@ -1,0 +1,20 @@
+pool:
+  name: Azure Pipelines
+  demands: maven
+
+steps:
+- task: Maven@4
+  displayName: 'Maven pom.xml'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '/home/vsts/work/1/s/target/maven-web-application*.war'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Pipeline Artifact'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: drop
